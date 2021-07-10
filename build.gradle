@@ -1,0 +1,42 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.4.30'
+    id 'dev.implario.bundler' version '3.0.2'
+}
+
+bundler {
+    name 'cristalix-lootbox'
+    mainClass 'ru.cristalix.mod.lootbox.Bootstrap'
+    version '1.0'
+    author 'delfikpro, anfanik'
+    clientMod true
+}
+
+if (bundler.clientMod) {
+    task moveToModsDir(type: Copy) {
+        group 'build'
+        dependsOn build
+        from jar.archiveFile.get().asFile.path.replace('-raw', '-bundle')
+        def dataDir = System.getenv("APPDATA") ?: System.getProperty("user.home")
+        def modsDir = file "$dataDir/.cristalix/updates/Minigames/mods"
+        modsDir.mkdirs()
+        into modsDir
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.implario.dev/public' }
+}
+
+dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.4.30'
+
+    compileOnly 'ru.cristalix:client-api:latest-SNAPSHOT'
+
+    implementation 'ru.cristalix:client-sdk:5.1.0'
+    implementation 'ru.cristalix:uiengine:3.7.7'
+}
+
+jar.from configurations.runtimeClasspath.collect(project.&zipTree)
+
+compileKotlin['kotlinOptions'].jvmTarget = "1.8"
