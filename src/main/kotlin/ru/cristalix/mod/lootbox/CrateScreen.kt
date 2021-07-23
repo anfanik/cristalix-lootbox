@@ -5,10 +5,12 @@ import dev.xdark.clientapi.item.ItemStack
 import dev.xdark.clientapi.opengl.GlStateManager
 import dev.xdark.clientapi.opengl.RenderHelper
 import dev.xdark.clientapi.resource.ResourceLocation
+import io.netty.buffer.Unpooled
 import org.lwjgl.opengl.GL11
 import org.lwjgl.util.glu.GLU
 import ru.cristalix.clientapi.JavaMod
 import ru.cristalix.uiengine.UIEngine
+import ru.cristalix.uiengine.UIEngine.clientApi
 import ru.cristalix.uiengine.element.ItemElement
 import ru.cristalix.uiengine.element.animate
 import ru.cristalix.uiengine.utility.*
@@ -352,7 +354,7 @@ class CrateScreen {
         text.color.alpha = 0.0
         itemRect.enabled = true
         itemRect.offset.y = 0.0
-        UIEngine.clientApi.chat().sendChatMessage("/lootboxsound")
+        clientApi.clientConnection().sendPayload("lootbox:opened", Unpooled.EMPTY_BUFFER)
 
         itemRect.animate(0.3, Easings.BACK_OUT) {
             offset.y = -30.0

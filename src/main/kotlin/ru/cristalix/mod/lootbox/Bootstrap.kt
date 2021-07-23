@@ -87,9 +87,13 @@ class Bootstrap : JavaMod() {
                 }
 
                 clientApi.minecraft().setIngameNotInFocus()
+                crateScreen.close()
                 crateScreen.setup(loot)
                 crateScreen.prepareToOpen()
                 ready = true
+            } else if (channel == "lootbox:close") {
+                crateScreen.close()
+                ready = false
             }
         }
 
